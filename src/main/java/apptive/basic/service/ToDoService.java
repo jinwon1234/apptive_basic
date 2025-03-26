@@ -23,12 +23,9 @@ public class ToDoService {
     }
 
     public ToDoDto findToDo(Long id) {
-        Optional<ToDo> toDo = toDoRepository.findById(id);
+        ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("존재하는 toDo가 없습니다."));
 
-        if (toDo.isPresent()) {
-            return new ToDoDto(toDo.get().getTitle(), toDo.get().getContent());
-        }
-        else throw new NotFoundToDo("존재하는 toDo가 없습니다.");
+        return new ToDoDto(toDo.getTitle(), toDo.getContent());
     }
 
     public boolean delete(Long id) {
@@ -44,15 +41,11 @@ public class ToDoService {
     }
 
     public ToDoDto update(Long id, ToDoDto toDoDto) {
-        Optional<ToDo> byId = toDoRepository.findById(id);
+        ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("존재하는 toDo가 없습니다."));
 
-        if(byId.isPresent()) {
-            ToDo toDo = byId.get();
-            toDo.changeTitle(toDoDto.getTitle());
-            toDo.changeContent(toDoDto.getContent());
-            return new ToDoDto(toDo.getTitle(), toDo.getContent());
-        }
-        else throw new NotFoundToDo("존재하는 toDo가 없습니다.");
+        toDo.changeTitle(toDoDto.getTitle());
+        toDo.changeContent(toDoDto.getContent());
+        return new ToDoDto(toDo.getTitle(), toDo.getContent());
     }
 
 }

@@ -1,12 +1,13 @@
 package apptive.basic.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-
-@Data
+@Getter
 public class ToDoDto {
     private String title;
     private String content;
+
+    protected ToDoDto(){};
 
     public ToDoDto(String title, String content) {
         this.title = title;

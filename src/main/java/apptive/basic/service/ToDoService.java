@@ -5,6 +5,7 @@ import apptive.basic.dto.ToDoDto;
 import apptive.basic.exception.NotFoundToDo;
 import apptive.basic.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,31 +18,27 @@ public class ToDoService {
 
     private final ToDoRepository toDoRepository;
 
+
     public void save(ToDoDto toDoDto) {
         ToDo toDo = new ToDo(toDoDto.getTitle(), toDoDto.getContent());
         toDoRepository.save(toDo);
     }
 
     public ToDoDto findToDo(Long id) {
+
         ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("존재하는 toDo가 없습니다."));
 
         return new ToDoDto(toDo.getTitle(), toDo.getContent());
     }
 
-    public boolean delete(Long id) {
-        Optional<ToDo> toDo = toDoRepository.findById(id);
+    public void delete(Long id) {
+        toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("삭제 실패, 존재하는 toDo가 없습니다."));
 
-        if (toDo.isPresent()) {
-            toDoRepository.deleteById(id);
-            return true;
-        }
-        else {
-            return false;
-        }
+        toDoRepository.deleteById(id);
     }
 
     public ToDoDto update(Long id, ToDoDto toDoDto) {
-        ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("존재하는 toDo가 없습니다."));
+        ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("수정 실패, 존재하는 toDo가 없습니다."));
 
         toDo.changeTitle(toDoDto.getTitle());
         toDo.changeContent(toDoDto.getContent());

@@ -26,38 +26,21 @@ public class ToDoController {
     }
 
     @GetMapping("/todo/{id}")
-    public ResponseEntity<?> getToDo(@PathVariable Long id) {
-        try {
-            ToDoDto toDoDto = toDoService.findToDo(id);
-            return ResponseEntity.status(HttpStatus.OK).body(toDoDto);
-        }
-        catch (NotFoundToDo notFoundToDo) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message",notFoundToDo.getMessage()));
-        }
+    public ResponseEntity<ToDoDto> getToDo(@PathVariable Long id) {
+        ToDoDto toDoDto = toDoService.findToDo(id);
+        return ResponseEntity.status(HttpStatus.OK).body(toDoDto);
     }
 
     @DeleteMapping("/todo/{id}")
     public ResponseEntity<Map<String,String>> deleteToDo(@PathVariable Long id) {
-
-        if(toDoService.delete(id)) return ResponseEntity.status(HttpStatus.OK)
-                .body(Map.of("message","삭제 성공"));
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("message","삭제 실패"));
-
+        toDoService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message","삭제 성공"));
     }
 
     @PatchMapping("/todo/{id}")
-    public ResponseEntity<?> updateToDo(@PathVariable Long id, @RequestBody ToDoDto toDoDto) {
-
-        try {
-            ToDoDto updateToDo = toDoService.update(id, toDoDto);
-            return ResponseEntity.status(HttpStatus.OK).body(updateToDo);
-        }
-        catch (NotFoundToDo notFoundToDo) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("message",notFoundToDo.getMessage()));
-        }
+    public ResponseEntity<ToDoDto> updateToDo(@PathVariable Long id, @RequestBody ToDoDto toDoDto) {
+        ToDoDto updateToDo = toDoService.update(id, toDoDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updateToDo);
     }
 
 }

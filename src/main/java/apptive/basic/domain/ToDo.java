@@ -18,7 +18,7 @@ public class ToDo {
 
     private String content;
 
-    protected ToDo(){};
+    protected ToDo(){}
 
     public ToDo(String title, String content) {
         this.title = title;

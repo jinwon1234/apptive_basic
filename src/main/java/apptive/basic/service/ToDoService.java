@@ -44,5 +44,4 @@ public class ToDoService {
         toDo.changeContent(toDoDto.getContent());
         return new ToDoDto(toDo.getTitle(), toDo.getContent());
     }
-
 }

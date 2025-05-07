@@ -1,4 +1,4 @@
-package apptive.basic.repository;
+package apptive.basic.todo.repository;
 
 import apptive.basic.domain.ToDo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +10,8 @@ import java.util.List;
 
 public interface ToDoRepository extends JpaRepository<ToDo, Long> {
 
-    List<ToDo> findByTitle(String title);
 
-    @Modifying
+    @Modifying(clearAutomatically = false)
     @Query("update ToDo t set t.title = :changeTitle where t.title = :title")
     void updateTitle(String title, String changeTitle);
 }

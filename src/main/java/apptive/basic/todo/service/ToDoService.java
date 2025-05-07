@@ -1,15 +1,14 @@
-package apptive.basic.service;
+package apptive.basic.todo.service;
 
 import apptive.basic.domain.ToDo;
-import apptive.basic.dto.ToDoDto;
+import apptive.basic.todo.dto.ToDoCreateDto;
+import apptive.basic.todo.dto.ToDoResponseDto;
+import apptive.basic.todo.dto.ToDoUpdateDto;
 import apptive.basic.exception.NotFoundToDo;
-import apptive.basic.repository.ToDoRepository;
+import apptive.basic.todo.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +18,17 @@ public class ToDoService {
     private final ToDoRepository toDoRepository;
 
 
-    public void save(ToDoDto toDoDto) {
+    public ToDoResponseDto save(ToDoCreateDto toDoDto) {
         ToDo toDo = new ToDo(toDoDto.getTitle(), toDoDto.getContent());
-        toDoRepository.save(toDo);
+        ToDo save = toDoRepository.save(toDo);
+        return new ToDoResponseDto(save.getId(), save.getTitle(), save.getContent());
     }
 
-    public ToDoDto findToDo(Long id) {
+    public ToDoResponseDto findToDo(Long id) {
 
         ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("존재하는 toDo가 없습니다."));
 
-        return new ToDoDto(toDo.getTitle(), toDo.getContent());
+        return new ToDoResponseDto(toDo.getId(), toDo.getTitle(), toDo.getContent());
     }
 
     public void delete(Long id) {
@@ -37,11 +37,12 @@ public class ToDoService {
         toDoRepository.deleteById(id);
     }
 
-    public ToDoDto update(Long id, ToDoDto toDoDto) {
+    public ToDoResponseDto update(Long id, ToDoUpdateDto toDoDto) {
         ToDo toDo = toDoRepository.findById(id).orElseThrow(() -> new NotFoundToDo("수정 실패, 존재하는 toDo가 없습니다."));
 
         toDo.changeTitle(toDoDto.getTitle());
         toDo.changeContent(toDoDto.getContent());
-        return new ToDoDto(toDo.getTitle(), toDo.getContent());
+
+        return new ToDoResponseDto(toDo.getId(), toDo.getTitle(), toDo.getContent());
     }
 }

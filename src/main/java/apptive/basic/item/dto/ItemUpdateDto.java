@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 @Getter
 @TotalPrice
-public class ItemCreateDto implements ItemDto {
+public class ItemUpdateDto implements ItemDto{
 
     @Range(min = 100, max = 10000)
     private int price;
@@ -14,10 +14,10 @@ public class ItemCreateDto implements ItemDto {
     @Range(min = 1, max = 100)
     private int quantity;
 
-    public ItemCreateDto(int price, int quantity) {
+    public ItemUpdateDto(int price, int quantity) {
         this.price = price;
         this.quantity = quantity;
     }
 
-    protected ItemCreateDto() {}
+    protected ItemUpdateDto() {}
 }

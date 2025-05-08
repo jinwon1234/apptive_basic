@@ -24,4 +24,11 @@ public class Item {
         this.price = price;
         this.quantity = quantity;
     }
+
+    public void changePrice(int price) {
+        this.price = price;
+    }
+    public void changeQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }

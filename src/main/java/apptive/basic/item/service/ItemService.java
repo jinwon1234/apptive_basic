@@ -1,8 +1,10 @@
 package apptive.basic.item.service;
 
 import apptive.basic.domain.Item;
+import apptive.basic.exception.NotFoundItemException;
 import apptive.basic.item.dto.ItemCreateDto;
 import apptive.basic.item.dto.ItemResponseDto;
+import apptive.basic.item.dto.ItemUpdateDto;
 import apptive.basic.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,14 @@ public class ItemService {
         Item save = itemRepository.save(item);
 
         return new ItemResponseDto(save.getId(), save.getPrice(), save.getQuantity());
+    }
+
+    public ItemResponseDto updateItem(ItemUpdateDto itemUpdateDto, Long id) {
+        Item findItem = itemRepository.findById(id).orElseThrow(() -> new NotFoundItemException("존재하지 않는 물품입니다."));
+
+        findItem.changePrice(itemUpdateDto.getPrice());
+        findItem.changeQuantity(itemUpdateDto.getQuantity());
+
+        return new ItemResponseDto(findItem.getId(), findItem.getPrice(), findItem.getQuantity());
     }
 }

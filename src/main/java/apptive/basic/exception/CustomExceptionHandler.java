@@ -5,21 +5,18 @@ import apptive.basic.exception.error.FieldErrorResponse;
 import apptive.basic.exception.error.GlobalErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-public class ToDoExceptionHandler {
+public class CustomExceptionHandler {
 
-    @ExceptionHandler(NotFoundToDo.class)
-    public ResponseEntity<Map<String,String>> notFoundToDoHandler(NotFoundToDo ex) {
+    @ExceptionHandler(NotFoundToDoException.class)
+    public ResponseEntity<Map<String,String>> notFoundToDoHandler(NotFoundToDoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", ex.getMessage()));
     }
 

@@ -3,7 +3,7 @@ package apptive.basic.service;
 import apptive.basic.todo.dto.ToDoCreateDto;
 import apptive.basic.todo.dto.ToDoResponseDto;
 import apptive.basic.todo.dto.ToDoUpdateDto;
-import apptive.basic.exception.NotFoundToDo;
+import apptive.basic.exception.NotFoundToDoException;
 import apptive.basic.todo.service.ToDoService;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -64,7 +64,7 @@ class ToDoServiceTest {
         toDoService.delete(saved.getId());
 
         Assertions.assertThatThrownBy(()->toDoService.findToDo(saved.getId()))
-                .isInstanceOf(NotFoundToDo.class);
+                .isInstanceOf(NotFoundToDoException.class);
     }
 
 }
